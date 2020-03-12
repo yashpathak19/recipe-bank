@@ -1,0 +1,78 @@
+.navbar-brand img{
+    width: 150px;
+    height: auto;
+}
+.navbar-nav {
+    width: 65%;
+    text-align: center;
+    margin-top: 15%;
+}
+.navbar-nav > li {
+    float: none;
+    display: inline-block;
+    padding: 0 15px 0 15px;
+}
+.navbar-dark .navbar-nav .nav-item .nav-link{
+    color: #ffffff;
+}
+.form-inline{
+    width: 40%;
+}
+.form-inline > a{
+    margin-left: 3%;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+.form-inline .btn{
+    border-color: #ffffff;
+    color: #FFFFFF;
+}
+header .form-inline .btn:hover{
+    background-color: #e38484;
+}
+a{
+    font-family: 'Alegreya Sans SC';
+    font-size: 22px;
+}
+.navbar-dark .navbar-nav .nav-item .nav-link:hover{
+    color: #e38484;
+}
+footer .container {
+    padding: 1em;
+}
+footer .form-inline{
+    width: 100%;
+    margin-top: 5%;
+    border-bottom:1px #000000 solid;
+    padding-bottom: 3em;
+}
+footer form h4 span{
+    font-family:"Brush Script MT";
+}
+footer .form-inline input{
+    margin-left: 1%;
+    border-radius: 0 ;
+    border-color: #000000;
+}
+footer .form-inline button{
+    color: #e38484;
+    background-color: #000000;
+
+}
+footer .form-inline button:hover{
+    background-color: #e38484;
+    color: #000000;
+}
