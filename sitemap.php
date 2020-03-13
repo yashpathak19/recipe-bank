@@ -21,7 +21,7 @@
                 <div class="col-sm-12">
 
                     <ul>
-                        <li><a href="index.php">Recipie Bank</a></li>
+                        <li><a href="index.php">Recipe Bank</a></li>
                         <ul>
                             <li><a href="login.php">Login</a></li>
                             <li><a href="signup.php">Sign Up</a></li>

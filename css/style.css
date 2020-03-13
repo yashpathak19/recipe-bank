@@ -76,3 +76,9 @@ footer .form-inline button:hover{
     background-color: #e38484;
     color: #000000;
 }
+#btn {
+    margin-top:1em;
+}
+#cmts {
+    margin-top:1em;
+}
