@@ -13,12 +13,102 @@
     </head>
 
     <body>
-        <header>
+        <header class="bg-dark">
             <?php include 'header.php'?>
         </header>
 
         <main>
-            
+            <!--Code referred from https://mdbootstrap.com/snippets/jquery/ascensus/135508 -->
+            <div class="container my-4">
+            <!--Carousel Wrapper-->
+            <div id="popular-item-carousel" class="carousel slide carousel-multi-item" data-ride="carousel">
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+
+                <!--First slide-->
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/chicken.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/pulao.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4> 
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/matarPaneer.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.First slide-->
+                <!--Second slide-->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/gulabJamun.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/sheerKhurma.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <div class="card-img-container">
+                                    <img class="card-img-top" src="images/besanBarfi.jpg" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Card title</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.Second slide-->
+
+            </div>
+            <!--/.Slides-->
+            </div>
+            <!--/.Carousel Wrapper-->
+
+
+            </div>  
         </main>
 
         <footer class="page-footer font-small ">
