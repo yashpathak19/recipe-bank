@@ -27,8 +27,8 @@
                 <span class="fa fa-search form-control-feedback"></span>
                 <input type="text" class="form-control btn-sm" placeholder="Search">
             </div>
-            <a class="btn btn-sm btn-outline-success my-2 my-sm-0" href="#">Login</a>
-            <a class="btn btn-sm btn-outline-success my-2 my-sm-0" href="#">SignUp</a>
+            <a class="btn btn-sm btn-outline-success my-2 my-sm-0" href="login.php">Login</a>
+            <a class="btn btn-sm btn-outline-success my-2 my-sm-0" href="signup.php">SignUp</a>
         </form>
     </div>
 </nav>
