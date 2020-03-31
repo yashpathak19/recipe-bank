@@ -28,7 +28,7 @@ if(isset($_POST['subscribebtn'])){
 			)
 		);
 		//Recipients
-		$mail->setFrom('shah.krishna1295@gmail.com', 'Mailer');
+		$mail->setFrom('shah.krishna1295@gmail.com', 'Recipie Bank');
 		$mail->addAddress($usremail, 'Krishna User');     // Add a recipient
 
 		
