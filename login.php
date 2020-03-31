@@ -1,3 +1,34 @@
+<?php
+
+require_once 'websiteCRUD.php';
+$emailerr = $passworderr = $email = $password = "";
+
+$error = false;
+session_start();
+if(isset($_POST['login'])){
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $websiteCRUD = new websiteCRUD();
+
+    $user = $websiteCRUD->checkUser($email, $password);
+    if (!$user){
+        $error = true;
+    }
+    else {
+        $_SESSION['email'] = $email;
+        $_SESSION['password'] = $password;
+        header('Location: feed.php');
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $emailerr = "Please enter valid email";
+    }
+    if($password == ""){
+        $passworderr =  "Please enter the type";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,7 +52,7 @@
         <div class="container py-5">
           <div class="row">
               <div class="col-md-12">
-                  <h2 class="text-center text-black mb-4">Login to post your recipes</h2>
+                  <h2 class="invisible">Login Form</h2>
                   <div class="row">
                       <div class="col-md-6 mx-auto">
                           <div class="card rounded-0">
@@ -29,18 +60,28 @@
                                   <h3 class="mb-0">Login</h3>
                               </div>
                               <div class="card-body">
+                                    <?php 
+                                        if ($error == true)
+                                        {
+                                    ?>
+                                            <div class="alert alert-danger">
+                                                <strong>Error!</strong> Invalid Login Credentials.
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
                                   <form class="form" id="userLogin" method="POST">
                                       <div class="form-group">
                                           <label for="email">Email</label>
-                                          <input type="text" class="form-control form-control-lg rounded-0" name="email" id="email" required>
-                                          <div class="invalid-feedback">Please provide Email!</div>
+                                          <input type="email" class="form-control form-control-lg rounded-0" value="<?=$email?>" name="email" id="email" required>
+                                          <span id="emailerr" class="invalid"><?=$emailerr?></span>
                                       </div>
                                       <div class="form-group">
                                           <label for="password">Password</label>
-                                          <input type="password" class="form-control form-control-lg rounded-0" id="password" required>
-                                          <div class="invalid-feedback">Please provide password</div>
+                                          <input type="password" class="form-control form-control-lg rounded-0" value="<?=$password?>" name="password" id="password" required>
+                                          <span id="passworderr" class="invalid"><?=$passworderr?></span>
                                       </div>
-                                      <button type="submit" class="btn btn-success btn-lg float-right" id="login">Login</button>
+                                      <button type="submit" name="login" class="btn btn-success btn-lg float-right" id="login">Login</button>
                                   </form>
                               </div>
                           </div>
@@ -48,9 +89,12 @@
                   </div>      
               </div>
           </div>
-      </div>
-        <footer class="page-footer font-small ">
-            <?php include 'footer.php'?>
-        </footer>
+        </div>
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <footer class="page-footer font-small ">
+        <?php include 'footer.php'?>
+    </footer>
 </html>

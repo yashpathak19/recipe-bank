@@ -13,10 +13,10 @@
             return $pdostm->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function addUser($fname, $lname, $email, $password, $type){
+        public function addUser($fname, $lname, $email, $password, $type, $subscription, $notification){
             $dbcon = Database::getDb();
-            $sql = "INSERT INTO users (fname, lname, email, password, type) 
-              VALUES (:fname, :lname, :email, :pwd, :usertype) ";
+            $sql = "INSERT INTO users (first_name, last_name, email, password, user_role, is_subscribed, mute_notification) 
+              VALUES (:fname, :lname, :email, :pwd, :usertype, :is_subscribed, :mute_notification) ";
             $pst = $dbcon->prepare($sql);
 
             $pst->bindParam(':fname', $fname);
@@ -24,17 +24,21 @@
             $pst->bindParam(':email', $email);
             $pst->bindParam(':pwd', $password);
             $pst->bindParam(':usertype', $type);
+            $pst->bindParam(':is_subscribed', $subscription);
+            $pst->bindParam(':mute_notification', $notification);
             return $pst->execute();
         }
 
-        public function updateUser($id, $fname, $lname, $email, $password, $type){
+        public function updateUser($id, $fname, $lname, $email, $password, $type, $subscription, $notification){
             $dbcon = Database::getDb();
             $sql = "Update users
-                set fname = :fname,
-                lname = :lname,
+                set first_name = :fname,
+                last_name = :lname,
                 email = :email,
                 password = :pwd,
-                type = :type
+                user_role = :user_type,
+                is_subscribed = :is_subscribed,
+                mute_notification = :mute_notification
                 WHERE id = :id
             ";
 
@@ -44,7 +48,9 @@
             $pst->bindParam(':lname', $lname);
             $pst->bindParam(':email', $email);
             $pst->bindParam(':pwd', $password);
-            $pst->bindParam(':type', $type);
+            $pst->bindParam(':user_type', $type);
+            $pst->bindParam(':is_subscribed', $subscription);
+            $pst->bindParam(':mute_notification', $notification);
             $pst->bindParam(':id', $id);
 
             return $pst->execute();
@@ -63,6 +69,16 @@
             $sql = "SELECT * FROM users WHERE id = :id";
             $pst = $dbcon->prepare($sql);
             $pst->bindParam(':id', $id);
+            $pst->execute();
+            return $pst->fetch(PDO::FETCH_OBJ);
+        }
+
+        public function checkUser($email, $password){
+            $dbcon = Database::getDb();
+            $sql = "SELECT * FROM users WHERE email = :email AND password = :password";
+            $pst = $dbcon->prepare($sql);
+            $pst->bindParam(':email', $email);
+            $pst->bindParam(':password', $password);
             $pst->execute();
             return $pst->fetch(PDO::FETCH_OBJ);
         }

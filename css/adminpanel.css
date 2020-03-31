@@ -6,6 +6,9 @@ ul.nav-pills {
 top: 20px;
 position: fixed;
 }
+#scrollspy_menu {
+  margin-top: 10em;
+}
 /* div.col-8 div {
 height: 500px;
 } */

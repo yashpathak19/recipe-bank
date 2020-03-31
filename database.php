@@ -31,24 +31,3 @@ class Database
 
 
 }
-
-//Database::getDb();
-//class Database
-//{
-//    private $user = 'root';
-//    private $password = '';
-//    private $dbname = 'phpclass';
-//    private $dsn = 'mysql:host=localhost;dbname=phpclass' ;
-//    private $dbcon;
-//
-//
-//    public function getDb(){
-//        $this->dbcon = new PDO($this->dsn, $this->user, $this->password);
-//        return $this->dbcon;
-//    }
-//
-//
-//}
-
-//$db = new Database();
-//$dbconn = $db->getDb();
