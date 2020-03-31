@@ -1,5 +1,5 @@
 <?php
-namespace subscriberoop;
+//namespace subscriberoop;
 class Subscriber {
 	public function listSubscriber($dbcon){
 		$sql = 'SELECT * FROM users where is_subscribed = 1';

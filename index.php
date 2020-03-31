@@ -110,7 +110,10 @@
 
             </div>  
         </main>
+		<section>
 		
+			<?php include 'subscription.php';?>
+		</section>
         <footer class="page-footer font-small ">
             <?php include 'footer.php'?>
         </footer>

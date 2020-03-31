@@ -6,6 +6,7 @@
             }
         }
 		
+		//function to validate email for subscription
 		public function validateContent($email_id){
 		
 		$patternname = "/^[a-zA-Z]*$/";
@@ -17,6 +18,6 @@
 		else{
 			return false;
 		}
-   }
+	}
     }
 ?>
