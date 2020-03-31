@@ -21,7 +21,7 @@
         <div class="container py-5">
           <div class="row">
               <div class="col-md-12">
-                  <h2 class="text-center text-white mb-4">Login to post your recipes</h2>
+                  <h2 class="text-center text-black mb-4">Login to post your recipes</h2>
                   <div class="row">
                       <div class="col-md-6 mx-auto">
                           <div class="card rounded-0">
@@ -29,7 +29,7 @@
                                   <h3 class="mb-0">Login</h3>
                               </div>
                               <div class="card-body">
-                                  <form class="form" role="form" autocomplete="off" id="userLogin" novalidate="" method="POST">
+                                  <form class="form" id="userLogin" method="POST">
                                       <div class="form-group">
                                           <label for="email">Email</label>
                                           <input type="text" class="form-control form-control-lg rounded-0" name="email" id="email" required>
