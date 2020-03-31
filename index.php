@@ -110,7 +110,7 @@
 
             </div>  
         </main>
-
+		
         <footer class="page-footer font-small ">
             <?php include 'footer.php'?>
         </footer>
