@@ -1,3 +1,28 @@
+<?php
+
+require_once 'database/database.php';
+require_once 'comment.php';
+
+$dbcon = Database::getDb();
+$comment = new Comment();
+$mycomments = $comment->show($dbcon);
+
+
+if (isset($_POST['addcomment'])) {
+    $comment_desc = $_POST['writecmt'];
+
+    $count = $comment->create($dbcon,$comment_desc);
+
+    if ($count) {
+        header("Location: drinks.php");
+    } else
+    {
+        echo "problem adding a comment";
+    }
+
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,12 +59,28 @@
                 <i 	class="fa fa-comment"></i>
 
             </div>
+            <form method="post" action="">
             <div id="cmts">
                 <label for ="writecmt"></label>
                 <input type="text" id= "writecmt" name="writecmt" value="" placeholder="...">
                 <button type="submit" name="addcomment" class="btn btn-outline-secondary btn-sm" id="postbtn">Comment</button>
 
             </div>
+            </form>
+            <?php
+            foreach($mycomments as $comment){
+                echo "<div id='listcmts'>" . $comment['comment_desc'] ."
+                     <form style='display: inline-block' action=\"DeleteComment.php\" method=\"post\">
+                         <input type=\"hidden\" name=\"id\" value= " . $comment['id'] . " />
+                          <input type=\"submit\" name=\"deleteComment\" value=\"Delete\"/>
+                     </form>
+                      <form style='display: inline-block' action=\"UpdateComment.php\" method=\"post\">
+                         <input type=\"hidden\" name=\"id\" value= " . $comment['id'] . " />
+                          <input type=\"submit\" name=\"updateComment\" value=\"Edit\"/>
+                     </form>
+                    </div>";
+
+            }?>
             <p>Take soda water, take lemon,5-6 mint leaves, blueberries. <a href="#">Read more</a></p>
             <div>
                 <ul class="pagination">

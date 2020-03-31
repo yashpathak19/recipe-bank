@@ -1,8 +1,7 @@
-<form class="form-inline justify-content-center">
-    <h4>Get&nbsp;<span class="display-4"> Latest Recipies </span>right into your inbox</h4>
-    <input class="form-control btn-sm mr-sm-2" type="email" placeholder="enter your email address" aria-label="Search">
-    <button class="btn btn-md btn-outline-success my-2 my-sm-0" type="submit">Subscribe</button>
-</form>
+<html>
+	<head></head>
+	<body>
+	
 <div class="p-3 bg-dark text-white">
     <!-- Footer Links -->
     <div class="container justify-content-center">
@@ -53,3 +52,5 @@
     </div>
     <!-- Footer Links -->
 </div>
+	</body>
+</html>
