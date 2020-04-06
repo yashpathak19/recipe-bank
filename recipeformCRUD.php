@@ -1,23 +1,23 @@
 <?php
 
-class Comment{
+class RecipeForm{
 
     public function show($dbcon){
-        $sql = 'select * from comments';
+        $sql = 'select * from recipes';
         $pdostm = $dbcon->prepare($sql);
         $pdostm->execute();
-        $mycomments= $pdostm->fetchAll();//fetch for get the data
-        return $mycomments;
+        $myrecipes= $pdostm->fetchAll();//fetch for get the data
+        return $myrecipes;
     }
 
-    public function create($dbcon,$comment_desc){
-        $sql = "INSERT INTO comments (comment_desc) 
-              VALUES (:comment_desc)";
-        if(!empty($comment_desc)) {
+    public function create($dbcon,$title,$ingredients,$preparation,$category){
+        $sql = "INSERT INTO recipes (title,ingredients,preparation,category)
+              VALUES (:title,:ingredients,:preparation,:category)";
+        if(!empty($title) && !empty($ingredients) && !empty($preparation) && !empty($category)) {
 
             $pst = $dbcon->prepare($sql);
 
-            $pst->bindParam(':comment_desc', $comment_desc);
+            $pst->bindParam(':title,:ingredients,:preparation,:category', $title,$ingredients,$preparation,$category);
             $count = $pst->execute();
             return $count;
         }
@@ -56,8 +56,8 @@ class Comment{
 
     }
     public function del($dbcon,$id){
-        //deleting selected comment
-        $sql = "DELETE FROM comments WHERE id = :id";
+        //deleting selected recipe
+        $sql = "DELETE FROM recipes WHERE id = :id";
 
         $pst = $dbcon->prepare($sql);
         $pst->bindParam(':id', $id);

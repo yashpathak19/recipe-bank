@@ -4,8 +4,8 @@ class database{
     //static variables, requirements for connection
     private static $user = 'root';
     private static $password = '';
-    private static $dbname = 'recipes';
-    private static $dsn = 'mysql:host=localhost;dbname=recipes' ;
+    private static $dbname = 'foodrecipienetwork';
+    private static $dsn = 'mysql:host=localhost;dbname=foodrecipienetwork' ;
     private static $dbcon;
     //constructor for database class
     private function __construct()

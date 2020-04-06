@@ -52,6 +52,10 @@
 						<li class="nav-item">
 							<a class="nav-link" href="drinks.php">Drinks</a>
 						</li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="recipeform.php">Add Recipe</a>
+                        </li>
 					</ul>
 					
 				</div>
