@@ -18,14 +18,16 @@ class Comment{
         return $results;
     }
 
-    public function create($dbcon,$comment_desc){
-        $sql = "INSERT INTO notifications (comment_desc) 
-              VALUES (:comment_desc)";
+    public function create($dbcon,$comment_desc,$recipe_id){
+        $sql = "INSERT INTO notifications (comment_desc,recipe_id) 
+              VALUES (:comment_desc,:recipe_id)";
         if(!empty($comment_desc)) {
 
             $pst = $dbcon->prepare($sql);
 
             $pst->bindParam(':comment_desc', $comment_desc);
+            $pst->bindParam(':recipe_id', $recipe_id);
+
             $count = $pst->execute();
             return $count;
         }

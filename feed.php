@@ -11,8 +11,8 @@ $myrecipes = $recipe->show($dbcon);
 
 if (isset($_POST['addcomment'])) {
     $desc = $_POST['writecmt'];
-
-    $count = $comment->create($dbcon,$desc);
+    $recipe_id = $_POST['addcomment'];
+    $count = $comment->create($dbcon,$desc,$recipe_id);
 
     if ($count) {
         header("Location: feed.php");
@@ -69,8 +69,9 @@ if (isset($_POST['addcomment'])) {
                 <label for =\"writecmt\"></label>
                 <input type=\"text\" id= \"writecmt\" name=\"writecmt\" value=\"\" placeholder=\"...\">
 
-                <button type=\"submit\" name=\"addcomment\" class=\"btn btn-outline-secondary btn-sm\"  id=\"postbtn\">Comment</button>
-                <div id='showcmt'></div>
+                <button type=\"submit\" name=\"addcomment\" value=" . $recipe['id'] . " class=\"btn btn-outline-secondary btn-sm\"  id=\"postbtn\">Comment</button>
+            <div id='showcmt'>  
+               
             </div>
              </form>
              <p> " . $recipe['preparation'] . "<a href=\"#\">Read more</a></p>";
