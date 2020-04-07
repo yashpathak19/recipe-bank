@@ -3,7 +3,7 @@
 class Comment{
 
     public function show($dbcon){
-        $sql = 'select * from comments';
+        $sql = 'select * from notifications where recipe_id = recipes->id';
         $pdostm = $dbcon->prepare($sql);
         $pdostm->execute();
         $mycomments= $pdostm->fetchAll();//fetch for get the data
@@ -11,7 +11,7 @@ class Comment{
     }
 
     public function create($dbcon,$comment_desc){
-        $sql = "INSERT INTO comments (comment_desc) 
+        $sql = "INSERT INTO notifications (comment_desc) 
               VALUES (:comment_desc)";
         if(!empty($comment_desc)) {
 
@@ -27,7 +27,7 @@ class Comment{
         }
     }
     public function showupd($dbcon,$id){
-        $sql = "SELECT * FROM comments where id = :id";
+        $sql = "SELECT * FROM notifications where id = :id";
 
         $pst = $dbcon->prepare($sql);
         $pst->bindParam(':id', $id);
@@ -39,7 +39,7 @@ class Comment{
     }
     public function update($dbcon,$comment_desc,$id){
 
-        $sql = "Update comments
+        $sql = "Update notifications
                 set comment_desc = :comment_desc
                 WHERE id = :id";
         if(!empty($comment_desc)) {
@@ -57,7 +57,7 @@ class Comment{
     }
     public function del($dbcon,$id){
         //deleting selected comment
-        $sql = "DELETE FROM comments WHERE id = :id";
+        $sql = "DELETE FROM notifications WHERE id = :id";
 
         $pst = $dbcon->prepare($sql);
         $pst->bindParam(':id', $id);

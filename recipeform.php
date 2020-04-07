@@ -11,13 +11,17 @@ $myrecipes = $recipe->show($dbcon);
 if (isset($_POST['addrecipe'])) {
     $title = $_POST['title'];
     $ingredients =$_POST['ingredients'];
-    $preparation = $_POST['proc'];
+    $preparation = $_POST['preparation'];
     $category = $_POST['category'];
 
     $count = $recipe->create($dbcon,$title,$ingredients,$preparation,$category);
 
     if ($count) {
-        header("Location: feed.php");
+
+        {
+        header("Location: showrecipe.php");
+        }
+
     } else
     {
         echo "problem adding a recipe";
@@ -57,7 +61,7 @@ if (isset($_POST['addrecipe'])) {
                 </div>
                 <div class="form-group">
                     <label for="proc">Procedure:</label>
-                    <textarea class="form-control" id="proc" name="proc" placeholder="Write Procedure here..."></textarea>
+                    <textarea class="form-control" id="proc" name="preparation" placeholder="Write Procedure here..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="category">Category:</label>

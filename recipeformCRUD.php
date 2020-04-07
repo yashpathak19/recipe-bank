@@ -1,5 +1,5 @@
 <?php
-
+require_once "database/database.php";
 class RecipeForm{
 
     public function show($dbcon){
@@ -9,15 +9,25 @@ class RecipeForm{
         $myrecipes= $pdostm->fetchAll();//fetch for get the data
         return $myrecipes;
     }
-
-    public function create($dbcon,$title,$ingredients,$preparation,$category){
+    public function deleterecipe($id){
+        $dbcon = Database::getDb();
+        $sql = "DELETE FROM recipes WHERE id = :id";
+        $pst = $dbcon->prepare($sql);
+        $pst->bindParam(':id', $id);
+        return $pst->execute();
+    }
+    public function create($dbcon,$title,$ingredients,$preparation,$category)
+    {
         $sql = "INSERT INTO recipes (title,ingredients,preparation,category)
               VALUES (:title,:ingredients,:preparation,:category)";
         if(!empty($title) && !empty($ingredients) && !empty($preparation) && !empty($category)) {
 
             $pst = $dbcon->prepare($sql);
 
-            $pst->bindParam(':title,:ingredients,:preparation,:category', $title,$ingredients,$preparation,$category);
+            $pst->bindParam(':title', $title);
+            $pst->bindParam(':ingredients',$ingredients);
+            $pst->bindParam(':preparation', $preparation);
+            $pst->bindParam(':category', $category);
             $count = $pst->execute();
             return $count;
         }
@@ -26,42 +36,35 @@ class RecipeForm{
 
         }
     }
-    public function showupd($dbcon,$id){
-        $sql = "SELECT * FROM comments where id = :id";
 
+    public function updaterecipe($id, $title, $ingredients, $preparation, $category){
+        $dbcon = Database::getDb();
+        $sql = "Update recipes
+                set title = :title,
+                ingredients = :ingredients,
+                preparation = :preparation,
+                category = :category
+                WHERE id = :id
+            ";
+
+        $pst = $dbcon->prepare($sql);
+
+        $pst->bindParam(':title', $title);
+        $pst->bindParam(':ingredients', $ingredients);
+        $pst->bindParam(':preparation', $preparation);
+        $pst->bindParam(':category', $category);
+        $pst->bindParam(':id', $id);
+
+        return $pst->execute();
+    }
+    public function getRecipe($id){
+        $dbcon = Database::getDb();
+        $sql = "SELECT * FROM recipes WHERE id = :id";
         $pst = $dbcon->prepare($sql);
         $pst->bindParam(':id', $id);
         $pst->execute();
-        $comment = $pst->fetch(PDO::FETCH_OBJ);
-
-        $comment_desc =  $comment->comment_desc;
-        return $comment_desc;
+        return $pst->fetch(PDO::FETCH_OBJ);
     }
-    public function update($dbcon,$comment_desc,$id){
 
-        $sql = "Update comments
-                set comment_desc = :comment_desc
-                WHERE id = :id";
-        if(!empty($comment_desc)) {
-            $pst = $dbcon->prepare($sql);
 
-            $pst->bindParam(':comment_desc', $comment_desc);
-            $pst->bindParam(':id', $id);
-
-            $count = $pst->execute();
-            return $count;
-        }else{
-            header("Location:feed.php");
-        }
-
-    }
-    public function del($dbcon,$id){
-        //deleting selected recipe
-        $sql = "DELETE FROM recipes WHERE id = :id";
-
-        $pst = $dbcon->prepare($sql);
-        $pst->bindParam(':id', $id);
-        $count = $pst->execute();
-        return $count;
-    }
 }
