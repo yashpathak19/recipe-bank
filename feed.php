@@ -9,12 +9,23 @@ $mycomments = $comment->show($dbcon);
 $recipe = new RecipeForm();
 $myrecipes = $recipe->show($dbcon);
 
+if (isset($_POST['addcomment'])) {
+    $desc = $_POST['writecmt'];
 
+    $count = $comment->create($dbcon,$desc);
+
+    if ($count) {
+        header("Location: feed.php");
+    } else
+    {
+        echo "problem adding a comment";
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Feed</title>
@@ -50,7 +61,7 @@ $myrecipes = $recipe->show($dbcon);
 
             <div>
                 <i onclick=\"myFunction(this)\" class=\"fa fa-thumbs-up\">12</i>
-                <i 	class=\"fa fa-comment\" name=\"viewcmt\" id=\"viewcmt\"></i>
+                <i 	class=\"fa fa-comment\" onclick='displayComments(" . $recipe['id'] .")' name=\"viewcmt\" id=\"viewcmt\"></i>
 
             </div>
             <form method=\"post\" action=\"\">
@@ -58,18 +69,14 @@ $myrecipes = $recipe->show($dbcon);
                 <label for =\"writecmt\"></label>
                 <input type=\"text\" id= \"writecmt\" name=\"writecmt\" value=\"\" placeholder=\"...\">
 
-                <button type=\"submit\" name=\"addcomment\" class=\"btn btn-outline-secondary btn-sm\" id=\"postbtn\">Comment</button>
-            </div>  
+                <button type=\"submit\" name=\"addcomment\" class=\"btn btn-outline-secondary btn-sm\"  id=\"postbtn\">Comment</button>
+                <div id='showcmt'></div>
+            </div>
              </form>
-              
              <p> " . $recipe['preparation'] . "<a href=\"#\">Read more</a></p>";
 
             }?>
-            <?php
-            foreach($mycomments as $comment){
-                echo $comment['comment_desc'] . "<br>";
-            }
-            ?>
+
             <div>
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -83,5 +90,18 @@ $myrecipes = $recipe->show($dbcon);
     <footer class="page-footer font-small ">
         <?php include 'footer.php'?>
     </footer>
+    <script>
+        function displayComments(id){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('showcmt').innerHTML = this.responseText;
+                    console.log(this.responseText);
+                }
+            }
+            xmlhttp.open("GET", "displayComment.php?id="+id, true);
+            xmlhttp.send();
+        }
+    </script>
 </body>
 </html>

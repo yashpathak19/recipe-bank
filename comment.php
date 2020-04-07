@@ -1,13 +1,21 @@
 <?php
-
+require_once 'database/database.php';
 class Comment{
 
     public function show($dbcon){
-        $sql = 'select * from notifications where recipe_id = recipes->id';
+        $sql = 'select * from notifications';
         $pdostm = $dbcon->prepare($sql);
         $pdostm->execute();
         $mycomments= $pdostm->fetchAll();//fetch for get the data
         return $mycomments;
+    }
+    public function showRecipeComment($id){
+        $dbcon = database::getDb();
+        $sql = "select * from notifications where recipe_id=$id";
+        $pdostm = $dbcon->prepare($sql);
+        $pdostm->execute();
+        $results = $pdostm->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
 
     public function create($dbcon,$comment_desc){
