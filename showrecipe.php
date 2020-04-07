@@ -57,21 +57,9 @@ $myrecipes = $recipe->show($dbcon);
                      
                      </div>
         
-    <img class=\"img-fluid\" src=\"images/maincourse0.jpg\" alt=\"image of recipe pastry\">
+    <img class=\"img-fluid\" src=\"\" alt=\"image of recipe\">
 
-            <div>
-                <i onclick=\"myFunction(this)\" class=\"fa fa-thumbs-up\">12</i>
-                <i 	class=\"fa fa-comment\" name=\"viewcmt\" id=\"viewcmt\"></i>
-
-            </div>
-            <div method=\"post\" action=\"\">
-            <div id=\"cmt1\">
-                <label for =\"writecmt\"></label>
-                <input type=\"text\" id= \"writecmt\" name=\"writecmt\" value=\"\" placeholder=\"...\">
-
-                <button type=\"submit\" name=\"addcomment\" class=\"btn btn-outline-secondary btn-sm\" id=\"postbtn\">Comment</button>
-
-            </div> 
+         
               
              <p> " . $recipe['preparation'] . "<a href=\"#\">Read more</a></p>
                 ";
