@@ -2,11 +2,22 @@
 
 require_once 'database/database.php';
 require_once 'comment.php';
+require_once 'websiteCRUD.php';
 
 $dbcon = Database::getDb();
 $comment = new Comment();
 $mycomments = $comment->show($dbcon);
 
+session_start();
+$user = false;
+$error = false;
+if(isset($_SESSION['email']) && isset($_SESSION['password'])){
+	$websiteCRUD = new websiteCRUD();
+	$user = $websiteCRUD->checkUser($_SESSION['email'], $_SESSION['password']);
+	if (!$user){
+		$error = "Error! No user found";
+	}
+}
 
 if (isset($_POST['addcomment'])) {
     $comment_desc = $_POST['writecmt'];
@@ -92,6 +103,9 @@ if (isset($_POST['addcomment'])) {
         </div>
 
     </main>
+	<section>
+			<?php include 'subscription.php';?>
+	</section>
     <footer class="page-footer font-small ">
         <?php include 'footer.php'?>
     </footer>

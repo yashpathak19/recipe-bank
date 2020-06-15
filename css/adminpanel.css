@@ -1,6 +1,5 @@
 body {
     position: relative;
-    background-color: silver;
   }
 ul.nav-pills {
 top: 20px;
@@ -12,3 +11,6 @@ position: fixed;
 /* div.col-8 div {
 height: 500px;
 } */
+#adminUserCreate {
+  margin-bottom: 5px;
+}

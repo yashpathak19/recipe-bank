@@ -9,6 +9,7 @@ class RecipeForm{
         $myrecipes= $pdostm->fetchAll();//fetch for get the data
         return $myrecipes;
     }
+
     public function deleterecipe($id){
         $dbcon = Database::getDb();
         $sql = "DELETE FROM recipes WHERE id = :id";
@@ -16,10 +17,10 @@ class RecipeForm{
         $pst->bindParam(':id', $id);
         return $pst->execute();
     }
-    public function create($dbcon,$title,$ingredients,$preparation,$category)
+    public function create($dbcon,$title,$ingredients,$preparation,$category,$image)
     {
-        $sql = "INSERT INTO recipes (title,ingredients,preparation,category)
-              VALUES (:title,:ingredients,:preparation,:category)";
+        $sql = "INSERT INTO recipes (title,ingredients,preparation,category,image)
+              VALUES (:title,:ingredients,:preparation,:category,:image)";
         if(!empty($title) && !empty($ingredients) && !empty($preparation) && !empty($category)) {
 
             $pst = $dbcon->prepare($sql);
@@ -28,6 +29,7 @@ class RecipeForm{
             $pst->bindParam(':ingredients',$ingredients);
             $pst->bindParam(':preparation', $preparation);
             $pst->bindParam(':category', $category);
+            $pst->bindParam(':image', $image);
             $count = $pst->execute();
             return $count;
         }
@@ -43,7 +45,7 @@ class RecipeForm{
                 set title = :title,
                 ingredients = :ingredients,
                 preparation = :preparation,
-                category = :category
+                category = :category,
                 WHERE id = :id
             ";
 

@@ -1,9 +1,21 @@
 <?php
 require_once 'websiteCRUD.php';
+session_start();
+$user = false;
+$error = false;
+//getting the logged in user
+if(isset($_SESSION['email']) && isset($_SESSION['password'])){
+  $websiteCRUD = new websiteCRUD();
+  $loggedin_user = $websiteCRUD->checkUser($_SESSION['email'], $_SESSION['password']);
+  if (!$loggedin_user){
+    $error = "Error! No user found";
+  }
+}
 $emailerr = $passworderr = $fnameerr = $lnameerr  = "";
 
 $fname = $lname = $email = $role = $password = $subscription = $notification = "";
 
+//getting the user details
 if(isset($_POST['updateUser'])){
     $id= $_POST['id'];
     $websiteCRUD = new websiteCRUD();
@@ -18,25 +30,43 @@ if(isset($_POST['updateUser'])){
     $subscription = $user->is_subscribed;
     $notification = $user->mute_notification;
 }
-
+//updating the user
 if(isset($_POST['update'])) {
+    $error = false;
+    $message = "";
     $fname = $_POST['firstname'];
     $lname = $_POST['lastname'];
     $email = $_POST['email'];
-    $pwd = $_POST['password'];
+    $password = $_POST['password'];
     $role = $_POST['role'];
     $subscription = $_POST['subscribed'];
-    $notification = $_POST['notications'];
+    $notification = $_POST['notification'];
     $id = $_POST['uid'];
-
-    $websiteCRUD = new websiteCRUD();
-
-    $count = $websiteCRUD->updateUser($id, $fname, $lname, $email, $pwd, $role, $subscription, $notification);
-
-    if($count){
+    $count = false;
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $emailerr = "Please enter valid email";
+    }
+    if($password == ""){
+        $passworderr =  "Please enter the password";
+    }
+    if($fname == ""){
+        $fnameerr =  "Please enter the firstname";
+    }
+    if($lname == ""){
+        $lnameerr =  "Please enter the lastname";
+    }
+    if (!$fname || !$lname || !$email || !$password || !$id){
+        $error = true;
+    }
+    else {
+        $websiteCRUD = new websiteCRUD();
+        $count = $websiteCRUD->updateUser($id, $fname, $lname, $email, $password, $role, $subscription, $notification);
+    }
+    echo $id, $fname, $lname, $email, $password, $role, $subscription, $notification;
+    if($count && !$error){
         header("Location: adminpanel.php");
     } else {
-        echo "Sorry we encountered a problem while updating the user";
+        $message =  "Sorry we encountered a problem while updating the user";
     }
 }
 ?>
@@ -72,6 +102,16 @@ if(isset($_POST['update'])) {
                               </div>
                               <div class="card-body">
                                   <form class="form" role="form" autocomplete="off" id="userSignup" novalidate="" method="POST">
+                                      <?php
+                                            if ($error) {
+                                        ?>
+                                            <div class="alert alert-danger">
+                                                <strong>Error!</strong> Please fill out all fields.
+                                                <p><?=$message?></p>
+                                            </div>
+                                        <?php
+                                            }   
+                                        ?>
                                       <input type="hidden" name="uid" value="<?= $id; ?>" />
                                       <div class="form-group">
                                           <label for="firstname">Firstname</label>
@@ -81,22 +121,31 @@ if(isset($_POST['update'])) {
                                       <div class="form-group">
                                           <label for="lastname">Lastname</label>
                                           <input type="text" class="form-control form-control-lg rounded-0" value="<?= $lname; ?>" name="lastname" id="lastname" required>
+                                          <span id="lname" class="invalid"><?=$lnameerr?></span>
                                       </div>
                                       <div class="form-group">
                                           <label for="email">Email</label>
                                           <input type="text" class="form-control form-control-lg rounded-0" value="<?= $email; ?>" name="email" id="email" required>
+                                          <span id="e-mail" class="invalid"><?=$emailerr?></span>
                                       </div>
                                       <div class="form-group">
                                           <label for="password">Password</label>
                                           <input type="password" class="form-control form-control-lg rounded-0" value="<?=$password;?>" name="password" id="password" required>
+                                          <span id="pwd" class="invalid"><?=$passworderr?></span>
                                       </div>
-                                      <div class="form-group">
-                                        <label for="role">User Role:</label>
-                                        <select class="form-control" name="role" id="role" value="<?= $role; ?>">
-                                            <option>Admin</option>
-                                            <option>User</option>
-                                        </select>
-                                       </div>
+                                      <?php
+                                            if ($loggedin_user->user_role == 1){
+                                      ?>
+                                        <div class="form-group">
+                                            <label for="role">User Role:</label>
+                                            <select class="form-control" name="role" id="role" value="<?= $role; ?>">
+                                                <option value="1">Admin</option>
+                                                <option value="0">User</option>
+                                            </select>
+                                        </div>
+                                      <?php
+                                            }
+                                    ?>
                                        <div class="form-group">
                                         <label for="subscribed">Email Subscription?</label>
                                         <div class="form-check form-check-inline">
@@ -108,7 +157,7 @@ if(isset($_POST['update'])) {
                                                 <label class="form-check-label">
                                                     <input type="radio" value="0" class="form-check-input" <?php echo ($subscription == '0') ?  "checked" : "" ;  ?> name="subscribed">No
                                                 </label>
-                                            </div>
+											</div>
                                         </div>
                                         <div class="form-group">
                                             <label for="notification">Notification Muted?</label>

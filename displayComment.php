@@ -8,7 +8,7 @@ foreach($cmts as $cmt){
     $responseText .= "<div>". $cmt['comment_desc'] ." 
                 <form action='UpdateComment.php' method='post'>
                 <input type='hidden' name='id' value=" . $cmt['id'] . ">
-                  <input type='submit' name='updateComment' value='Edit'>
+                  <input type='submit' name='UpdateComment' value='Edit'>
                 </form>
                 <form action='DeleteComment.php' method='post'>
                 <input type='hidden' name='id' value=" . $cmt['id'] . ">

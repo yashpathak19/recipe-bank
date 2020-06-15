@@ -1,43 +1,62 @@
 <?php
+    require_once 'feedCrud.php';
+    require_once 'database/database.php';
+    require_once 'comment.php';
+    require_once 'recipeformCRUD.php';
+    require_once 'websiteCRUD.php';
 
-require_once 'database/database.php';
-require_once 'comment.php';
-require_once 'recipeformCRUD.php';
-$dbcon = Database::getDb();
-$comment = new Comment();
-$mycomments = $comment->show($dbcon);
-$recipe = new RecipeForm();
-$myrecipes = $recipe->show($dbcon);
-
-if (isset($_POST['addcomment'])) {
-    $desc = $_POST['writecmt'];
-    $recipe_id = $_POST['addcomment'];
-    $count = $comment->create($dbcon,$desc,$recipe_id);
-
-    if ($count) {
-        header("Location: feed.php");
-    } else
-    {
-        echo "problem adding a comment";
+    session_start();
+    $user = false;
+    $error = false;
+	$websiteCRUD = new websiteCRUD();
+    if(isset($_SESSION['email']) && isset($_SESSION['password'])){
+        $websiteCRUD = new websiteCRUD();
+        $user = $websiteCRUD->checkUser($_SESSION['email'], $_SESSION['password']);
+        if (!$user){
+            $error = "Error! No user found";
+        }
     }
+    $dbcon = Database::getDb();
+    $comment = new Comment();
+    $mycomments = $comment->show($dbcon);
+    $recipe = new RecipeForm();
+    $myrecipes = $recipe->show($dbcon);
 
-}
+    //function for updating like
+    if (isset($_POST['updateLike'])) {
+        $uid = $_POST['uid'];
+        $recipe_id = $_POST['recipe_id'];
+        $websiteCRUD = new websiteCRUD();
+        $like = $websiteCRUD->updateLike($recipe_id, $uid, 1);
+
+        if ($like) {
+            header("Location: feed.php");
+        } else
+        {
+            echo "We encountered a problem!";
+        }
+
+    }
+    $feedObj = new FeedCrud();
+    $recipes = $feedObj->listRecipes('recipes')
 ?>
-<!DOCTYPE html>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta charset="utf-8"/>
+    <meta charset="utf-8"/>
     <title>Feed</title>
     <link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
     <!---->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script src="feed.js"></script>
    <!---->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="js/feed.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
@@ -45,61 +64,126 @@ if (isset($_POST['addcomment'])) {
         <?php include 'header.php'?>
     </header>
     <main>
-        <div id="feed" class="container p-3 my-3 border" style="max-width: 50%;">
-            <h2 class="shadow p-4 mb-4 bg-white">New Recipes</h2>
-            <?php
-            foreach($myrecipes as $recipe){
-
-                echo "<img src=\"images/avatar.png\" alt=\"John Doe\"  class=\"mr-3 mt-3 rounded-circle\" style=\"width:60px;\">
-                    <div class=\"media-body\">
-                <h4>" . $recipe['title'] . "<small><i><a href=\"#\"> By Nova Belly</a> Posted on December 30, 2019</i></small></h4>
+    <!-- if the user has mute notification on this won't show up -->
+    <?php
+        if ($user && $user->mute_notification == 0){
+    ?>
+        <div class="container mt-3">
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Notifications</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body" id="modal-body">
+                    Modal body..
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <form action="notifications.php" method="post">
+                            <input type="submit" class="btn btn-info" value="Open Notifications"/>
+                        </form>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                    
+                </div>
+                </div>
             </div>
-        
-    <img class=\"img-fluid\" src=\"\" alt=\"image of recipe\">
-
-            <div>
-                <i onclick=\"myFunction(this)\" class=\"fa fa-thumbs-up\">12</i>
-                <i 	class=\"fa fa-comment\" onclick='displayComments(" . $recipe['id'] .")' name=\"viewcmt\" id=\"viewcmt\"></i>
-
+            
             </div>
-            <form method=\"post\" action=\"\">
-            <div id=\"cmt1\">
-                <label for =\"writecmt\"></label>
-                <input type=\"text\" id= \"writecmt\" name=\"writecmt\" value=\"\" placeholder=\"...\">
-
-                <button type=\"submit\" name=\"addcomment\" value=" . $recipe['id'] . " class=\"btn btn-outline-secondary btn-sm\"  id=\"postbtn\">Comment</button>
-            <div id='showcmt'>  
-               
+        <?php
+            } if ($user) {
+        ?>
+            <div id="feed" class="container p-3 my-3" style="max-width: 50%;">
+                <a class="btn btn-outline-secondary btn-lg btn-block" href="createRecipe.php">Add new Recipe</a>
             </div>
-             </form>
-             <p> " . $recipe['preparation'] . "<a href=\"#\">Read more</a></p>";
-
-            }?>
-
-            <div>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </div>
+        <?php
+            }
+        ?>
+        <div class="container">
+            <form id="sorting-form" method="post">
+                <div class="row sorting-container">
+                    <div class="sorting-dd">
+                        <select id="sortmeal" >
+                            <option value="0">Sort by meals</option>
+                            <option value ="appetizers">Appetizers</option>
+                            <option value="main">Main Course</option>
+                            <option value="deserts">Deserts</option>
+                            <option value="beverages">Bevarages</option>
+                        </select>
+                    </div>   
+                    <!-- <div class="sorting-dd">
+                        <select id="sortpopular">
+                            <option value="">Sort by popularity</option>
+                            <option value="mp">Most Popular</option>
+                            <option value="lp">Least Popular</option>
+                        </select>
+                    </div> -->
+                    <div class="sorting-dd">
+                        <select id="sortdate">
+                            <option value="0">Sort by date</option>
+                            <option value="asc">Newest</option>
+                            <option value="desc">Oldest</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </form>
+            <div class="sorting-dd">
+                        <button class="btn btn-sm btn-secondary" onclick = "sortFeed()">Apply filters</button>
+                    </div>
         </div>
-
+        <div class="container feed-main-container" id="feed-main-container" style="margin: 1em auto">
+            <?php
+				
+                foreach($recipes as $r){
+                    echo("
+                        <div class='card feed-card' style='width: 18rem;'>
+                            <a href='showRecipe.php?id=".$r['id']."'>
+                                <img class='card-img-top' src='upload/".$r['recipe_img']."' alt='Card image cap'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>".$r['title']."</h5>
+                                    <p class='card-text'>Likes ".$websiteCRUD->getTotalLikes($r['id'])."</p>
+                                </div>
+                            </a>
+                        </div>
+                    ");
+                }
+            ?>
+        </div>
+        
     </main>
+	<section>
+		<?php include "subscription.php" ?>
+	</section>
     <footer class="page-footer font-small ">
         <?php include 'footer.php'?>
     </footer>
     <script>
-        function displayComments(id){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function(){
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById('showcmt').innerHTML = this.responseText;
-                    console.log(this.responseText);
+        function sortFeed(){
+            mealparam = $("#sortmeal option:selected").val();
+           
+            dateparam = $("#sortdate option:selected").val();
+            response = $.ajax({
+                type: "POST",
+                url: 'sortRecipe.php',
+                data: {meal: mealparam, date:dateparam},
+                success: function(data){
+                   $('#feed-main-container').html(data);
+                    //document.getElementById('feed-main-container').innerHTML = data;
+                    console.log(data);
+                },
+                error: function() {
+                    alert('There was some error performing the AJAX call!'+err);
                 }
-            }
-            xmlhttp.open("GET", "displayComment.php?id="+id, true);
-            xmlhttp.send();
+            });
         }
     </script>
 </body>

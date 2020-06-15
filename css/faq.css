@@ -1,0 +1,43 @@
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+body{
+    overflow-x: hidden;
+}
+main{
+    max-width: 1200px;
+    margin: 1em auto;
+}
+.page-header{
+    text-align:center;
+}
+.add-faq-btn{
+    margin: 1em 0; 
+}
+.error{
+    margin-bottom: 0.5em;
+    color:red;
+}
+.faq-main-container{
+    display:flex;
+    flex-flow: row;
+    flex-shrink: 0;
+    justify-content: center;
+}
+#cat-container{
+    flex: 1 0 0;
+    padding-right:1em;
+}
+#faq-container{
+    flex: 2 0 0;
+}
+.card-header{
+    text-align: center;
+    font-weight: bold;
+    font-size:1.2em
+}
+.list-group-item{
+    text-align: center;
+}

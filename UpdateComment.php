@@ -5,7 +5,7 @@ require_once 'comment.php';
 
 $comment_desc = "";
 $dbcon = Database::getDb();
-if(isset($_POST['updateComment'])){
+if(isset($_POST['UpdateComment'])){
     $id= $_POST['id'];
     $c =new Comment();
     $comment_desc = $c->showupd($dbcon,$id);

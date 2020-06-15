@@ -1,3 +1,6 @@
+header{
+	background-color : #071330;
+}
 .navbar{
     max-width: 1200px;
     margin: 0 auto;
@@ -32,7 +35,7 @@
     width: 348px;
     height:242px;
   }
-.card-img-top{
+.carousel-img-top{
 width:100%;
 height:100%;
 }
@@ -73,6 +76,7 @@ a{
     color: ;
 }
 footer .container {
+	
     padding: 1em;
 }
 footer .form-inline{
@@ -110,4 +114,39 @@ footer .form-inline button:hover{
 #typage div p{
 	font-size:20px;
 	color:#5C5C5C;
+}
+
+#newLetterForm, #updateLetterForm{
+	margin:5% 0;
+}
+
+#updateLetterForm button, #newLetterForm button{
+	margin-right:2%;
+}
+
+.feed-main-container{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.feed-card{
+    flex:1 0 30%;
+    margin: 0.5em;
+}
+
+.sorting-container{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    
+}
+.sorting-dd{ 
+    flex: 1 0 auto;
+}
+.sorting-dd select{
+    padding:1em;
+    width:100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

@@ -1,26 +1,39 @@
 <?php
-	require_once 'database.php';
-	require_once 'subscriber.php';
-	require_once 'traits/valtrait.php';
 
-	if(isset($_POST['subscribebtn'])) {
-	$email_id = $_POST['useremail'];
-	$msg = "Please enter email id";
+require_once 'websiteCRUD.php';
+require_once 'database/database.php';
+require_once 'subscriber.php';
+require_once 'traits/valtrait.php';
 
-	require_once 'validation.php';
+$signed_user = false;
 
-	//checking that user dont leave any field empty.
-	$obj = new subscriberTrait();
-	$result = $obj->validateContent($email_id);
-	
-	if($result != true){
-		$email_id = $_POST['useremail'];
+if(isset($_POST['newSubscription'])){
+	//checking if the user is logged in 
+	if(isset($_SESSION['email']) && isset($_SESSION['password'])){
+		
+		$websiteCRUD = new websiteCRUD();
+		$signed_user = $websiteCRUD->checkUser($_SESSION['email'], $_SESSION['password']);
+
 		$dbcon = Database::getDb();
 		$s = new Subscriber();
-		$subscribers = $s->addSubscriber($dbcon, $email_id);
+		$subscribers = $s->addSubscriber($dbcon, $signed_user->email);	
+		
+		if($signed_user->is_subscribed == 1){
+			echo "<script>alert('You are alreay subscribed!')</script>";
+		}
+		else{
+			$subscribers = $s->addSubscriber($dbcon, $signed_user->email);	
+			echo "<script>alert('Thank You for subscribing, Please check your email for further details.')</script>";
+		}
 		
 	}
+	
+	else{
+		echo "<script>alert('Please first log in.')</script>";
+	}
+	
 }
+	
 ?>
 
 <html>
@@ -34,9 +47,8 @@
 	</head>
 	<footer>
 		<form class="form-inline justify-content-center" method="post">
-			<h4>Get&nbsp;<span class="display-4"> Latest Recipies </span>right into your inbox</h4>
-			<input class="form-control btn-sm mr-sm-2" type="email" name="useremail" placeholder="enter your email address" aria-label="Search">
-		   <button class="btn btn-md btn-outline-success my-2 my-sm-0" name="subscribebtn" id="subscribebtn" type="submit">Subscribe</button>
+			<h4>Get&nbsp;<span class="display-4"> Latest Recipies </span>right into your inbox&nbsp;&nbsp;</h4>
+		   <button class="btn btn-md my-2 my-sm-0" name="newSubscription" id="newSubscription" type="submit">Subscribe</button>
 		</form>
 	</footer>
 </html>
